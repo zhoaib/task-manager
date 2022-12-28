@@ -1,12 +1,35 @@
 import React from 'react';
 
 const AddTask = () => {
+    const imgHostKey = process.env.REACT_APP_imgbb_key;
+
+    const addTask = event => {
+        event.preventDefault()
+        const form = event.target;
+        const task = form.task.value;
+        const details = form.details.value;
+        const actionDate = form.date.value;
+        const image = form.img.files[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?&key=${imgHostKey}`
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgData => {
+                console.log(imgData.data.url)
+            })
+    }
+
     return (
         <div className='text-center my-20 text-3xl font-semibold'>
             Add Your Daily Task
             <div>
                 <div className='flex flex-col justify-center items-center mt-8  '>
-                    <form className="w-1/2 p-6 shadow-2xl">
+                    <form onSubmit={addTask} className="w-1/2 p-6 shadow-2xl rounded-xl">
 
                         <div >
                             <h2 className='font-bold text-xl my-3'>Name of your task</h2>
