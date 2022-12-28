@@ -2,8 +2,8 @@ import React from 'react';
 
 const AddTask = () => {
     return (
-        <div>
-            add task
+        <div className='text-center my-20 text-3xl font-semibold'>
+            Add Your Daily Task
         </div>
     );
 };
