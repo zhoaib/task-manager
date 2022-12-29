@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const SignUp = () => {
-    const { createUser } = useContext(AuthContext)
+
+
+    const { createUser, updateUser } = useContext(AuthContext)
+    const navigate = useNavigate();
+
+
     const handleSignUp = event => {
         event.preventDefault()
         const form = event.target;
@@ -16,11 +21,21 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user)
+                const userInfo = {
+                    displayName: name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.error(err));
+                form.reset();
+                navigate('/')
             })
             .catch(err => console.error(err));
     }
     return (
-        <div>
+        <div data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="3000">
             <div className='flex flex-col justify-center items-center mt-8  '>
                 <h2 className='text-3xl my-10 font-bold'>Sign Up!</h2>
                 <form onSubmit={handleSignUp} className='w-1/2 p-6 shadow-2xl rounded-lg'>
@@ -45,7 +60,7 @@ const SignUp = () => {
 
                 </form>
                 <p className='my-5'>Already have an account?
-                    <Link to='/login' className='text-yellow-500 font-semibold'> Login</Link>
+                    <Link to='/login' className='text-blue-600  font-semibold'> Login</Link>
                 </p>
 
 

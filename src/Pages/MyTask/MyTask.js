@@ -21,6 +21,7 @@ const MyTask = () => {
             catch (error) {
 
             }
+
         }
     })
     if (isLoading) {
@@ -43,9 +44,32 @@ const MyTask = () => {
                 });
         }
     };
+    const handleComplete = (id) => {
+        fetch(`http://localhost:5000/myTask/${id}`, {
+            method: "PUT",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.modifiedCount > 0) {
+                    toast.success("Task Completed");
+                    refetch()
+
+                }
+
+            });
+    };
+
+
+
+    if (isLoading) {
+        return <Loading></Loading>
+    }
 
     return (
-        <div>
+        <div data-aos="fade-up"
+            data-aos-anchor-placement="center-bottom"
+            data-aos-duration="3000">
             <h2 className='text-2xl my-10 text-center font-bold'>You have {allTask?.length} task to complete yet</h2>
 
             <div className='grid gap-6 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mx-10'>
@@ -59,7 +83,16 @@ const MyTask = () => {
                                     <p className="dark:text-gray-100"><strong>Details: </strong>{task.taskDetails}</p>
                                     <p className="dark:text-gray-100"><strong>Date of the task:</strong> {task.taskDate}</p>
                                 </div>
-                                <button type="submit" className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Complete Task</button>
+                                {
+                                    task.status !== "completed" && (
+                                        <button onClick={() => handleComplete(task._id)} type="submit" className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Complete Task</button>
+                                    )
+                                }
+                                {
+                                    task.status === "completed" && <button type="submit" className="mt-5 text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Task Completed</button>
+                                }
+
+
                                 <button onClick={() => handleDelete(task._id)} type="button" className="mt-5 text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Delete Task</button>
                             </div>
                         </div>

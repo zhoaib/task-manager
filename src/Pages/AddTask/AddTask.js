@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const AddTask = () => {
+    const [updated, setUpdated] = useState('');
     const { user } = useContext(AuthContext)
     const imgHostKey = process.env.REACT_APP_imgbb_key;
     const navigate = useNavigate()
@@ -52,10 +53,17 @@ const AddTask = () => {
                 }
             })
     }
+    const handleKeyDown = event => {
+        if (event.key === 'Enter') {
+            setUpdated(updated);
 
+        }
+    }
 
     return (
-        <div className='text-center my-20 text-3xl font-semibold'>
+        <div data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="3000" className='text-center my-20 text-3xl font-semibold'>
             Add Your Daily Task
             <div>
                 <div className='flex flex-col justify-center items-center mt-8  '>
@@ -81,7 +89,7 @@ const AddTask = () => {
                             <input name="img" className="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" required />
                         </div>
 
-                        <button type="submit" className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Add Task</button>
+                        <button type="submit" onKeyDown={handleKeyDown} className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Add Task</button>
                     </form>
                 </div>
             </div>
