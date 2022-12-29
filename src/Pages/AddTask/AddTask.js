@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const AddTask = () => {
+    const { user } = useContext(AuthContext)
     const imgHostKey = process.env.REACT_APP_imgbb_key;
+    const navigate = useNavigate()
 
     const addTask = event => {
         event.preventDefault()
@@ -20,9 +25,34 @@ const AddTask = () => {
         })
             .then(res => res.json())
             .then(imgData => {
-                console.log(imgData.data.url)
+                if (imgData.success) {
+                    console.log(imgData.data.url)
+                    const myTask = {
+                        taskName: task,
+                        taskDetails: details,
+                        taskImage: imgData.data.url,
+                        taskDate: actionDate,
+                        userEmail: user.email,
+                        userName: user.displayName,
+                    }
+                    fetch('http://localhost:5000/allTask', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        body: JSON.stringify(myTask)
+                    })
+                        .then(res => res.json())
+                        .then(result => {
+                            console.log(result)
+                            toast.success('Task added successfully');
+                            navigate('/mytask')
+
+                        })
+                }
             })
     }
+
 
     return (
         <div className='text-center my-20 text-3xl font-semibold'>
@@ -48,7 +78,7 @@ const AddTask = () => {
 
                         <div>
                             <h2 className='font-bold text-xl my-3'>Any photo for the task</h2>
-                            <input name="img" className="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" />
+                            <input name="img" className="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" required />
                         </div>
 
                         <button type="submit" className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Add Task</button>
