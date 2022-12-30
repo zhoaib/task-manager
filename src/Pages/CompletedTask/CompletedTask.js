@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 import Loading from '../../Loading/Loading';
 
@@ -49,7 +50,8 @@ const CompletedTask = () => {
             data-aos-duration="3000">
             <div>
                 <div>
-                    <h2 className='text-2xl my-10 text-center font-bold'>You have completed {allTask?.length} tasks successfully</h2>
+                    <h2 className='text-2xl my-10 text-center font-bold'>Your completed tasks</h2>
+                    <h2 className='text-2xl my-10 text-center font-bold'>See your uncompleted tasks <Link to={'/mytask'}><button className="mt-5 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Uncompleted tasks</button></Link></h2>
                     <div className='grid gap-6 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mx-10 '>
                         {
                             allTask.map(task => task.status === "completed" &&
