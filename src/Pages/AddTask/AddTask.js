@@ -2,8 +2,10 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 
 const AddTask = () => {
+    useTitle('Add Task')
     const [updated, setUpdated] = useState('');
     const { user } = useContext(AuthContext)
     const imgHostKey = process.env.REACT_APP_imgbb_key;
@@ -36,7 +38,7 @@ const AddTask = () => {
                         userEmail: user.email,
                         userName: user.displayName,
                     }
-                    fetch('http://localhost:5000/allTask', {
+                    fetch('https://task-manager-server-hazel.vercel.app/allTask', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

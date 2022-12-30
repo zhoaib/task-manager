@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import todo from '../../assets/todo.png'
+import useTitle from '../../hooks/useTitle';
 
 const Home = () => {
+    useTitle('Home')
     return (
         <div data-aos="fade-down"
             data-aos-easing="linear"

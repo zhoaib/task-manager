@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 import Loading from '../../Loading/Loading';
 
 const MyTask = () => {
-
+    useTitle('My Task')
     const { user } = useContext(AuthContext)
 
 
@@ -13,7 +14,7 @@ const MyTask = () => {
         queryKey: ['myTask'],
         queryFn: async () => {
             try {
-                const res = await fetch(`http://localhost:5000/myTask?email=${user?.email}`);
+                const res = await fetch(`https://task-manager-server-hazel.vercel.app/myTask?email=${user?.email}`);
                 const data = await res.json();
                 return data;
 
@@ -31,7 +32,7 @@ const MyTask = () => {
         console.log(id);
         const proced = window.confirm("Confirm Delete?");
         if (proced) {
-            fetch(`http://localhost:5000/myTask/${id}`, {
+            fetch(`https://task-manager-server-hazel.vercel.app/myTask/${id}`, {
                 method: "DELETE",
             })
                 .then((res) => res.json())
@@ -45,7 +46,7 @@ const MyTask = () => {
         }
     };
     const handleComplete = (id) => {
-        fetch(`http://localhost:5000/myTask/${id}`, {
+        fetch(`https://task-manager-server-hazel.vercel.app/myTask/${id}`, {
             method: "PUT",
         })
             .then((res) => res.json())

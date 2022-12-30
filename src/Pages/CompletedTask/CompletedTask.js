@@ -3,12 +3,15 @@ import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import useTitle from '../../hooks/useTitle';
 import Loading from '../../Loading/Loading';
 
 const CompletedTask = () => {
+    useTitle('Completed Task')
+
     const { user } = useContext(AuthContext)
 
-    const url = `http://localhost:5000/myTask?email=${user?.email}`
+    const url = `https://task-manager-server-hazel.vercel.app/myTask?email=${user?.email}`
     const { data: allTask = [], isLoading, refetch } = useQuery({
         queryKey: ['myTask'],
         queryFn: async () => {
@@ -27,7 +30,7 @@ const CompletedTask = () => {
         console.log(id);
         const proced = window.confirm("Confirm Delete?");
         if (proced) {
-            fetch(`http://localhost:5000/myTask/${id}`, {
+            fetch(`https://task-manager-server-hazel.vercel.app/myTask/${id}`, {
                 method: "DELETE",
             })
                 .then((res) => res.json())
